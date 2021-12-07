@@ -83,7 +83,7 @@ class Unet(object):
         print('{} model, and classes loaded.'.format(self.model_path))
         
         if self.cuda:
-            self.net = nn.DataParallel(self.net)
+            #self.net = nn.DataParallel(self.net)
             self.net = self.net.cuda()
 
     #---------------------------------------------------#

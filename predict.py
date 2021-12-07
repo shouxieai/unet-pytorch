@@ -7,7 +7,8 @@ import time
 import cv2
 import numpy as np
 from PIL import Image
-
+import torch
+import torch.onnx
 from unet import Unet
 
 if __name__ == "__main__":
@@ -23,6 +24,9 @@ if __name__ == "__main__":
     #   'dir_predict'表示遍历文件夹进行检测并保存。默认遍历img文件夹，保存img_out文件夹，详情查看下方注释。
     #----------------------------------------------------------------------------------------------------------#
     mode = "predict"
+    
+    dummy = torch.zeros(1, 3, 640, 640).cuda()
+    torch.onnx.export(unet.net, (dummy,), "unet.onnx", input_names=["images"], output_names=["output"], opset_version=11)
     #----------------------------------------------------------------------------------------------------------#
     #   video_path用于指定视频的路径，当video_path=0时表示检测摄像头
     #   想要检测视频，则设置如video_path = "xxx.mp4"即可，代表读取出根目录下的xxx.mp4文件。
@@ -62,16 +66,17 @@ if __name__ == "__main__":
             seg_img[:, :, 1] += ((pr == c)*( self.colors[c][1] )).astype('uint8')
             seg_img[:, :, 2] += ((pr == c)*( self.colors[c][2] )).astype('uint8')
         '''
-        while True:
-            img = input('Input image filename:')
-            try:
-                image = Image.open(img)
-            except:
-                print('Open Error! Try again!')
-                continue
-            else:
-                r_image = unet.detect_image(image)
-                r_image.show()
+        #while True:
+        # img = input('Input image filename:')
+        img = "img/street.jpg"
+        try:
+            image = Image.open(img)
+        except:
+            print('Open Error! Try again!')
+        else:
+            r_image = unet.detect_image(image)
+            r_image.save("demo.jpg")
+            #r_image.show()
 
     elif mode == "video":
         capture=cv2.VideoCapture(video_path)

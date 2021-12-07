@@ -51,8 +51,7 @@ class Unet(nn.Module):
         up1 = self.up_concat1(feat1, up2)
 
         final = self.final(up1)
-        
-        return final
+        return torch.nn.functional.softmax(final.permute(0, 2, 3, 1), dim=-1)
 
     def _initialize_weights(self, *stages):
         for modules in stages:

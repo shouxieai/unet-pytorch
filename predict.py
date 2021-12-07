@@ -25,7 +25,7 @@ if __name__ == "__main__":
     #----------------------------------------------------------------------------------------------------------#
     mode = "predict"
     
-    dummy = torch.zeros(1, 3, 640, 640).cuda()
+    dummy = torch.zeros(1, 3, 512, 512).cuda()
     torch.onnx.export(unet.net, (dummy,), "unet.onnx", input_names=["images"], output_names=["output"], opset_version=11)
     #----------------------------------------------------------------------------------------------------------#
     #   video_path用于指定视频的路径，当video_path=0时表示检测摄像头

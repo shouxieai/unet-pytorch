@@ -1,5 +1,8 @@
 # 关于fork
-- fork只是修改了导出onnx文件部分，请参照predict.py:28/71，以及unet.py:86行
+- fork只是修改了导出onnx文件部分，请参照:
+    - predict.py:28行 71行
+    - unet.py:86行
+    - nets/unet.py:54行
 - 其他绝大部分没动
 
 ## Unet：U-Net: Convolutional Networks for Biomedical Image Segmentation目标检测模型在Pytorch当中的实现
